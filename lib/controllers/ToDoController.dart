@@ -37,7 +37,7 @@ class ToDoController extends ResourceController {
 
   @Operation.get()
   Future<Response> getAllToDos() async {
-    final toDos = Query<ToDo>(context).fetch();
+    final toDos = await Query<ToDo>(context).fetch();
     return Response.ok(toDos);
   }
 
