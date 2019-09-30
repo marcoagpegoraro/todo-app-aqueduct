@@ -8,43 +8,20 @@ class ToDoController extends ResourceController {
 
   final ManagedContext context;
 
-  final List<ToDo> toDos = [
-    ToDo()
-      ..id = 1
-      ..name = 'trabaia1'
-      ..done = false,
-    ToDo()
-      ..id = 2
-      ..name = 'trabaia2'
-      ..done = false,
-    ToDo()
-      ..id = 3
-      ..name = 'trabaia3'
-      ..done = false,
-    ToDo()
-      ..id = 4
-      ..name = 'trabaia4'
-      ..done = false,
-    ToDo()
-      ..id = 5
-      ..name = 'trabaia5'
-      ..done = false,
-    ToDo()
-      ..id = 6
-      ..name = 'trabaia6'
-      ..done = false,
-  ];
-
   @Operation.get()
   Future<Response> getAllToDos() async {
-    final toDos = await Query<ToDo>(context).fetch();
-    return Response.ok(toDos);
+    final query = await Query<ToDo>(context).fetch();
+    return Response.ok(query);
   }
 
   @Operation.get('id')
   Future<Response> getToDoByID() async {
     final id = int.parse(request.path.variables['id']);
-    final toDo = toDos.firstWhere((todo) => todo.id == id, orElse: () => null);
+    final query = Query<ToDo>(context);
+
+    query.where((todo) => todo.id).equalTo(id);
+    final toDo = await query.fetchOne();
+    
     if (toDo == null) {
       return Response.notFound();
     }
@@ -53,22 +30,25 @@ class ToDoController extends ResourceController {
   }
 
   @Operation.post()
-  Future<Response> postToDo(@Bind.body() ToDo toDo) async {
-    toDos.add(toDo);
-    return Response.ok(toDos);
+  Future<Response> postToDo() async {
+    final body = ToDo()..read(await request.body.decode(), ignore: ["id"]);
+    final query = Query<ToDo>(context)..values = body;
+    final toDo = await query.insert();
+    return Response.ok(toDo);
   }
 
-  @Operation.put()
-  Future<Response> putToDo(@Bind.body() ToDo toDo) async {
-    toDos.removeAt(toDos.indexWhere((r) => r.id == toDo.id));
-    toDos.add(toDo);
-    return Response.ok(toDos);
+  @Operation.put('id')
+  Future<Response> putToDo(@Bind.path("id") int id) async {
+    final body = ToDo()..read(await request.body.decode(), ignore: ["id"]);
+    final query = (Query<ToDo>(context)..values = body ..where((todo) => todo.id).equalTo(id));
+    final toDo = await query.updateOne();
+    return Response.ok(toDo);
   }
 
   @Operation.delete('id')
-  Future<Response> deleteToDoByID() async {
-    final id = int.parse(request.path.variables['id']);
-    toDos.removeAt(toDos.indexWhere((r) => r.id == id));
-    return Response.ok(toDos);
+  Future<Response> deleteToDoByID(@Bind.path("id") int id) async {
+    final query = (Query<ToDo>(context)..where((todo) => todo.id).equalTo(id));
+    final toDo = await query.delete();
+    return Response.ok({'ok': true});
   }
 }

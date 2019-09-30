@@ -7,18 +7,4 @@ class _ToDo {
   int id;
   String name;
   bool done;
-
-  Map<String, dynamic> asMap() {
-    return {
-      "id": id,
-      "name": name,
-      "done": done,
-    };
-  }
-
-  void readFromMap(Map<String, dynamic> object) {
-    id = object["id"] as int;
-    name = object["name"] as String;
-    done = object["done"] as bool;
-  }
 }

@@ -23,10 +23,6 @@ class TodoChannel extends ApplicationChannel {
 
     router.route("/todo/[:id]").link(() => ToDoController(context));
 
-    router.route("/example").linkFunction((request) async {
-      return Response.ok({"key": "value"});
-    });
-
     return router;
   }
 }
