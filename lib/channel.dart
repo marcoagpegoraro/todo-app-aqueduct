@@ -1,3 +1,4 @@
+import 'package:todo/controllers/AuthController.dart' as prefix0;
 import 'package:todo/controllers/ToDoController.dart';
 
 import 'todo.dart';
@@ -12,7 +13,7 @@ class TodoChannel extends ApplicationChannel {
 
     final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
-        "postgres", "postgres", "localhost", 5432, "todo_aqueduct");
+        "postgres", "docker", "localhost", 5432, "todo_aqueduct");
 
     context = ManagedContext(dataModel, persistentStore);
   }
@@ -22,6 +23,7 @@ class TodoChannel extends ApplicationChannel {
     final router = Router();
 
     router.route("/todo/[:id]").link(() => ToDoController(context));
+    router.route("/auth/[:id]").link(() => AuthController(context));
 
     return router;
   }
