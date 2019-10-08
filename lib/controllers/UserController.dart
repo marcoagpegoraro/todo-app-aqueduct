@@ -9,15 +9,37 @@ class UserController extends ResourceController {
 
   final ManagedContext context;
 
+
   @Operation.post()
   Future<Response> postUser() async {
     final body = User()..read(await request.body.decode(), ignore: ["id"]);
-    body.passwordHash = Utils.generateSHA256Hash(body.password);
+
+    final validationMessages = userValidation(body); 
+    if(validationMessages.isNotEmpty){ 
+      return Response.ok(validationMessages);
+    }
+    
     final query = Query<User>(context);
+    body.passwordHash = Utils.generateSHA256Hash(body.password);
     query.values.email = body.email;
     query.values.passwordHash = body.passwordHash;
     query.values.username = body.username;
-    final toDo = await query.insert();
-    return Response.ok(toDo);
+    
+    final user = await query.insert();
+    return Response.ok(user);
+  }
+
+  List<String> userValidation(User user){
+    final errors = List<String>();
+    if(user.email == null){
+      errors.add("Campo e-mail não pode ser nulo");
+    }
+    if(user.username == null){
+      errors.add("Campo username não pode ser nulo");
+    }
+    if(user.password == null){
+      errors.add("Campo senha não pode ser nulo");
+    }
+    return errors;
   }
 }

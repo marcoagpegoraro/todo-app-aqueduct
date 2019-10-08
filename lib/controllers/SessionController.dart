@@ -24,6 +24,11 @@ class SessionController extends ResourceController {
       ..where((user) => user.username).equalTo(body.username)
       ..where((user) => user.passwordHash).equalTo(passwordHash.toString());
     final user = await query.fetchOne();
+
+    if(user == null){
+      return Response.notFound();
+    }
+
     return Response.ok(user);
   }
 }
