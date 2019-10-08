@@ -6,7 +6,7 @@ class _User {
   @primaryKey
   int id;
   @Column(unique: true)
-  String username;
+  String name;
   @Column(unique: true)
   String email;
   @Column(omitByDefault: true)

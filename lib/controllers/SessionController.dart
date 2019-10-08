@@ -15,18 +15,13 @@ class SessionController extends ResourceController {
 
     final passwordHash = Utils.generateSHA256Hash(body.password);
 
-    print(body.password);
-    print(body.username);
-    print(passwordHash);
-    print(passwordHash.toString());
-
     final query = Query<User>(context)
-      ..where((user) => user.username).equalTo(body.username)
-      ..where((user) => user.passwordHash).equalTo(passwordHash.toString());
+      ..where((user) => user.email).like(body.email)
+      ..where((user) => user.passwordHash).like(passwordHash.toString());
     final user = await query.fetchOne();
 
-    if(user == null){
-      return Response.notFound();
+    if (user == null) {
+      return Response.ok("Usuário não encontrado");
     }
 
     return Response.ok(user);
