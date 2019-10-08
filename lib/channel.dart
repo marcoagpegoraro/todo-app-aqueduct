@@ -1,4 +1,4 @@
-import 'package:todo/controllers/AuthController.dart' as prefix0;
+import 'package:todo/controllers/SessionController.dart';
 import 'package:todo/controllers/ToDoController.dart';
 
 import 'todo.dart';
@@ -23,7 +23,7 @@ class TodoChannel extends ApplicationChannel {
     final router = Router();
 
     router.route("/todo/[:id]").link(() => ToDoController(context));
-    router.route("/auth/[:id]").link(() => AuthController(context));
+    router.route("/session/[:id]").link(() => SessionController(context));
 
     return router;
   }

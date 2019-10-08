@@ -9,5 +9,6 @@ class _User {
   String username;
   @Column(unique: true)
   String email;
+  String password;
   String passwordHash;
 }
