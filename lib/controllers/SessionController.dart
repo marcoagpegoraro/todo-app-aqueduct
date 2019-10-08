@@ -1,7 +1,6 @@
 import 'package:todo/models/User.dart';
 import 'package:todo/todo.dart';
-import 'package:crypto/crypto.dart';
-import 'dart:convert'; // for the utf8.encode method
+import 'package:todo/utils/Utils.dart';
 
 class SessionController extends ResourceController {
   SessionController(this.context) {
@@ -14,12 +13,10 @@ class SessionController extends ResourceController {
   Future<Response> login() async {
     final body = User()..read(await request.body.decode(), ignore: ["id"]);
 
-    var bytes = utf8.encode(body.password); // data being hashed
-    final passwordHash = sha256.convert(bytes);
+    final passwordHash = Utils.generateSHA256Hash(body.password);
 
     print(body.password);
     print(body.username);
-    print(bytes);
     print(passwordHash);
     print(passwordHash.toString());
 
