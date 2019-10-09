@@ -24,6 +24,8 @@ class SessionController extends ResourceController {
       return Response.ok("Usuário não encontrado");
     }
 
-    return Response.ok(user);
+    final jwt = Utils.generateJWT(user);
+
+    return Response.ok(jwt);
   }
 }
