@@ -1,6 +1,7 @@
 import 'package:todo/controllers/SessionController.dart';
 import 'package:todo/controllers/ToDoController.dart';
 import 'package:todo/controllers/UserController.dart';
+import 'package:todo/middlewares/JwtMiddleware.dart';
 
 import 'todo.dart';
 
@@ -23,7 +24,10 @@ class TodoChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
-    router.route("/todo/[:id]").link(() => ToDoController(context));
+    router
+        .route("/todo/[:id]")
+        .link(() => JwtMiddleware())
+        .link(() => ToDoController(context));
     router.route("/user/[:id]").link(() => UserController(context));
     router.route("/session/[:id]").link(() => SessionController(context));
 
