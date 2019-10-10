@@ -26,6 +26,6 @@ class SessionController extends ResourceController {
 
     final jwt = Utils.generateJWT(user);
 
-    return Response.ok(jwt);
+    return Response.ok({"token": jwt});
   }
 }

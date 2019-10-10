@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:js';
-
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:todo/models/User.dart';
 import 'package:todo/todo.dart';
@@ -27,17 +24,19 @@ class JwtMiddleware extends Controller {
       final JwtClaim decClaimSet =
           verifyJwtHS256Signature(jwtToken, Utils.jwtKey);
 
-      final userId = decClaimSet.toJson()["sub"] as int;
+      final userId = int.parse(decClaimSet.toJson()["sub"].toString());
 
       if (userId == null) {
         throw JwtException;
       }
 
-      //verificar se o jwt está expirado
+      //Verificar se o JWT está atualizado
+      final dataAtual = DateTime.now().toUtc();
+      if (dataAtual.isAfter(decClaimSet.expiry)) {
+        return Response.unauthorized();
+      }
 
-      print(userId);
-      print(decClaimSet.expiry);
-
+      //Validar se usuário existe
       final query = Query<User>(context)
         ..where((user) => user.id).equalTo(userId);
       final user = query.fetch();
