@@ -9,7 +9,7 @@ class JwtMiddleware extends Controller {
   final ManagedContext context;
 
   @override
-  FutureOr<RequestOrResponse> handle(Request request) {
+  FutureOr<RequestOrResponse> handle(Request request) async {
     final authHeader = request.raw.headers["authorization"];
 
     if (authHeader.isEmpty) return Response.unauthorized();
@@ -39,13 +39,11 @@ class JwtMiddleware extends Controller {
       //Validar se usuário existe
       final query = Query<User>(context)
         ..where((user) => user.id).equalTo(userId);
-      final user = query.fetch();
+      final user = await query.fetchOne();
 
       if (user == null) return Response.unauthorized();
 
-      request.addResponseModifier((response) {
-        response.headers['X-User-id'] = userId;
-      });
+      request.attachments['user'] = user;
     } on JwtException {
       return Response.unauthorized();
     }

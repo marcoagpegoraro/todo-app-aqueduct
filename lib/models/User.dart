@@ -1,3 +1,4 @@
+import 'package:todo/models/ToDo.dart';
 import 'package:todo/todo.dart';
 
 class User extends ManagedObject<_User> implements _User {}
@@ -12,4 +13,6 @@ class _User {
   @Column(omitByDefault: true)
   String password;
   String passwordHash;
+
+  ManagedSet<ToDo> toDo;
 }

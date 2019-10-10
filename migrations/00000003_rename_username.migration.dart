@@ -5,7 +5,7 @@ class Migration3 extends Migration {
   @override
   Future upgrade() async {
     await store.execute("""
-      ALTER TABLE _user 
+      ALTER TABLE _user
       RENAME COLUMN username TO name;
     """);
   }
@@ -13,7 +13,7 @@ class Migration3 extends Migration {
   @override
   Future downgrade() async {
     await store.execute("""
-      ALTER TABLE _user 
+      ALTER TABLE _user
       RENAME COLUMN name TO username;
     """);
   }
