@@ -23,7 +23,7 @@ class Utils {
           // 'name': user.name,
           // 'email': user.email,
         },
-        maxAge: Duration());
+        maxAge: Duration(days: 1));
 
     final token = "Bearer ${issueJwtHS256(claimSet, jwtKey)}";
     return token;
