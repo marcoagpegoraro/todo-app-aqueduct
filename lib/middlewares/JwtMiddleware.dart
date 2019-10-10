@@ -1,8 +1,16 @@
+import 'dart:ffi';
+import 'dart:js';
+
 import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'package:todo/models/User.dart';
 import 'package:todo/todo.dart';
 import 'package:todo/utils/Utils.dart';
 
 class JwtMiddleware extends Controller {
+  JwtMiddleware(this.context);
+
+  final ManagedContext context;
+
   @override
   FutureOr<RequestOrResponse> handle(Request request) {
     final authHeader = request.raw.headers["authorization"];
@@ -19,16 +27,26 @@ class JwtMiddleware extends Controller {
       final JwtClaim decClaimSet =
           verifyJwtHS256Signature(jwtToken, Utils.jwtKey);
 
-      final userId = decClaimSet.toJson()["sub"];
+      final userId = decClaimSet.toJson()["sub"] as int;
 
       if (userId == null) {
         throw JwtException;
       }
 
+      //verificar se o jwt está expirado
+
       print(userId);
       print(decClaimSet.expiry);
-      //buscar no banco os dados do usuario e colocar no request
 
+      final query = Query<User>(context)
+        ..where((user) => user.id).equalTo(userId);
+      final user = query.fetch();
+
+      if (user == null) return Response.unauthorized();
+
+      request.addResponseModifier((response) {
+        response.headers['X-User-id'] = userId;
+      });
     } on JwtException {
       return Response.unauthorized();
     }

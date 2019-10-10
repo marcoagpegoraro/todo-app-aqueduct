@@ -26,7 +26,7 @@ class TodoChannel extends ApplicationChannel {
 
     router
         .route("/todo/[:id]")
-        .link(() => JwtMiddleware())
+        .link(() => JwtMiddleware(context))
         .link(() => ToDoController(context));
     router.route("/user/[:id]").link(() => UserController(context));
     router.route("/session/[:id]").link(() => SessionController(context));
