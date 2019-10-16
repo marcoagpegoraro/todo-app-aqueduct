@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
-import 'package:todo/models/User.dart'; // for the utf8.encode method
+import 'package:todo/models/user.dart'; // for the utf8.encode method
 
 class Utils {
   static const String jwtKey =
