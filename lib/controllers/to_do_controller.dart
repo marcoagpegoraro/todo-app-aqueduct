@@ -1,4 +1,3 @@
-import 'package:todo/middlewares/jwt_middleware.dart';
 import 'package:todo/models/to_do.dart';
 import 'package:todo/models/user.dart';
 import 'package:todo/todo.dart';
@@ -6,14 +5,13 @@ import 'package:todo/todo.dart';
 class ToDoController extends ResourceController {
   ToDoController(this.context) {
     acceptedContentTypes = [ContentType.json];
-    user = request.attachments['user'] as User;
   }
 
-  User user;
   final ManagedContext context;
 
   @Operation.get()
   Future<Response> getAllToDos() async {
+    User user = request.attachments['user'] as User;
     final query = await Query<ToDo>(context)
       ..where((todo) => todo.user.id).equalTo(user.id);
     final toDos = await query.fetch();
@@ -22,6 +20,7 @@ class ToDoController extends ResourceController {
 
   @Operation.get('id')
   Future<Response> getToDoByID() async {
+    User user = request.attachments['user'] as User;
     final id = int.parse(request.path.variables['id']);
     final query = Query<ToDo>(context)
       ..where((todo) => todo.id).equalTo(id)
@@ -46,6 +45,7 @@ class ToDoController extends ResourceController {
 
   @Operation.put('id')
   Future<Response> putToDo(@Bind.path("id") int id) async {
+    User user = request.attachments['user'] as User;
     final body = ToDo()..read(await request.body.decode(), ignore: ["id"]);
     final query = Query<ToDo>(context)
       ..values = body
@@ -57,6 +57,7 @@ class ToDoController extends ResourceController {
 
   @Operation.delete('id')
   Future<Response> deleteToDoByID(@Bind.path("id") int id) async {
+    User user = request.attachments['user'] as User;
     final query = Query<ToDo>(context)
       ..where((todo) => todo.id).equalTo(id)
       ..where((todo) => todo.user.id).equalTo(user.id);
