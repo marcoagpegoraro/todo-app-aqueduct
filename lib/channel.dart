@@ -1,7 +1,7 @@
-import 'package:todo/controllers/SessionController.dart';
-import 'package:todo/controllers/ToDoController.dart';
-import 'package:todo/controllers/UserController.dart';
-import 'package:todo/middlewares/JwtMiddleware.dart';
+import 'package:todo/controllers/session_controller.dart';
+import 'package:todo/controllers/to_do_controller.dart';
+import 'package:todo/controllers/user_controller.dart';
+import 'package:todo/middlewares/jwt_middleware.dart';
 
 import 'todo.dart';
 
@@ -15,7 +15,7 @@ class TodoChannel extends ApplicationChannel {
 
     final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     final persistentStore = PostgreSQLPersistentStore.fromConnectionInfo(
-        "postgres", "docker", "localhost", 5432, "todo_aqueduct");
+        "postgres", "postgres", "localhost", 5432, "todo_aqueduct");
 
     context = ManagedContext(dataModel, persistentStore);
   }

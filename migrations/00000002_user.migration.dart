@@ -11,7 +11,7 @@ class Migration2 extends Migration {
           isIndexed: false,
           isNullable: false,
           isUnique: false),
-      SchemaColumn("username", ManagedPropertyType.string,
+      SchemaColumn("name", ManagedPropertyType.string,
           isPrimaryKey: false,
           autoincrement: false,
           isIndexed: false,

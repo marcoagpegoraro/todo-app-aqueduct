@@ -1,4 +1,4 @@
-import 'package:todo/models/User.dart';
+import 'package:todo/models/user.dart';
 import 'package:todo/todo.dart';
 
 class ToDo extends ManagedObject<_ToDo> implements _ToDo {}

@@ -1,6 +1,6 @@
-import 'package:todo/models/User.dart';
+import 'package:todo/models/user.dart';
 import 'package:todo/todo.dart';
-import 'package:todo/utils/Utils.dart';
+import 'package:todo/utils/utils.dart';
 
 class SessionController extends ResourceController {
   SessionController(this.context) {

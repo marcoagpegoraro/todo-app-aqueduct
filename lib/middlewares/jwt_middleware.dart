@@ -1,7 +1,7 @@
 import 'package:jaguar_jwt/jaguar_jwt.dart';
-import 'package:todo/models/User.dart';
+import 'package:todo/models/user.dart';
 import 'package:todo/todo.dart';
-import 'package:todo/utils/Utils.dart';
+import 'package:todo/utils/utils.dart';
 
 class JwtMiddleware extends Controller {
   JwtMiddleware(this.context);

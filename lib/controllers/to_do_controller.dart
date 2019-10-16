@@ -1,6 +1,6 @@
-import 'package:todo/middlewares/JwtMiddleware.dart';
-import 'package:todo/models/ToDo.dart';
-import 'package:todo/models/User.dart';
+import 'package:todo/middlewares/jwt_middleware.dart';
+import 'package:todo/models/to_do.dart';
+import 'package:todo/models/user.dart';
 import 'package:todo/todo.dart';
 
 class ToDoController extends ResourceController {
