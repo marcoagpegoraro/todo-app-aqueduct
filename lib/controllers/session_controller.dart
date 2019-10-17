@@ -21,11 +21,11 @@ class SessionController extends ResourceController {
     final user = await query.fetchOne();
 
     if (user == null) {
-      return Response.ok("Usuário não encontrado");
+      return Response.ok({"auth": false,"token": ""});
     }
 
     final jwt = Utils.generateJWT(user);
 
-    return Response.ok({"token": jwt});
+    return Response.ok({"auth": true, "token": jwt});
   }
 }
