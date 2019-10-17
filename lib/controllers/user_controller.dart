@@ -25,7 +25,7 @@ class UserController extends ResourceController {
     query.values.name = body.name;
 
     final user = await query.insert();
-    return Response.ok(user);
+    return Response.ok("Usuário criado com sucesso");
   }
 
   List<String> userValidation(User user) {
