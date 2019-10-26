@@ -36,8 +36,12 @@ class ToDoController extends ResourceController {
 
   @Operation.post()
   Future<Response> postToDo() async {
+    User user = request.attachments['user'] as User;
     final body = ToDo()..read(await request.body.decode(), ignore: ["id"]);
-    final query = Query<ToDo>(context)..values = body;
+    final query = Query<ToDo>(context)
+      ..values.name = body.name
+      ..values.done = body.done
+      ..values.user.id = user.id;
 
     final toDo = await query.insert();
     return Response.ok(toDo);

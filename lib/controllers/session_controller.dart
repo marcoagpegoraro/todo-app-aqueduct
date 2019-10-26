@@ -11,7 +11,7 @@ class SessionController extends ResourceController {
 
   @Operation.post()
   Future<Response> login() async {
-    final body = User()..read(await request.body.decode(), ignore: ["id"]);
+    final body = User()..read(await request.body.decode());
 
     final passwordHash = Utils.generateSHA256Hash(body.password);
 
